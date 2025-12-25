@@ -10,7 +10,8 @@ export default async function handler(req, res) {
       `https://api.keysco.re/lookup?query=${encodeURIComponent(q)}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.KEYSCORE_API_KEY}`
+          Authorization: `Bearer ${process.env.KEYSCORE_API_KEY}`,
+          "Content-Type": "application/json"
         }
       }
     );
@@ -18,6 +19,9 @@ export default async function handler(req, res) {
     const data = await r.json();
     res.status(200).json(data);
   } catch (e) {
-    res.status(500).json({ error: "API error" });
+    res.status(500).json({
+      error: "API error",
+      detail: e.message
+    });
   }
 }
